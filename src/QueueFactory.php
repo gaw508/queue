@@ -17,11 +17,16 @@ class QueueFactory
      *
      * @param string $queue_type    The type of queue, e.g. Sqs
      * @param string $config        Config data for the queue (specific to queue used)
-     * @return QueueInterface       The queue instance
+     * @return QueueInterface|bool  The queue instance or false if invalid queue type
      */
     public static function create($queue_type, $config)
     {
         $class = "Gaw508\\Queue\\$queue_type";
+
+        if (!class_exists($class)) {
+            return false;
+        }
+
         return new $class($config);
     }
 }
